@@ -1,2 +1,1 @@
-# ralt
-The Ralt framework for Rust
+# The Ralt framework for Rust

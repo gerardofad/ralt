@@ -1,0 +1,9 @@
+[package]
+
+name    = "raltc"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+
+raltc_core = { path = "src/raltc_core" }
