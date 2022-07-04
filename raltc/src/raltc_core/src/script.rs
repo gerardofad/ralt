@@ -1,4 +1,5 @@
 use std::fs;
+use std::path::Path;
 
 use raltc_core_error::core_error::core_error;
 
@@ -13,17 +14,33 @@ impl Script {
         }
     }
 
-    pub fn scan(&mut self, file_name: &str) {
-        let file = fs::read_to_string(file_name);
+    pub fn exists(path: &str) -> bool {
+        Path::new(path).exists()
+    }
+
+    fn path_lowercase(path: &str) -> String {
+        let mut path_lowercase = String::from(path);
+        path_lowercase.make_ascii_lowercase();
+        path_lowercase
+    }
+
+    pub fn scan(&mut self, path: &str) {
+        if !Script::exists(path) {
+            core_error(
+                format!("file does not exist: '{}'",
+                    Script::path_lowercase(path)).as_str()
+            );
+        }
+
+        let file = fs::read_to_string(path);
 
         match file {
             Ok(_)  => {},
             Err(_) => {
-                let mut file_name_lowercase = String::from(file_name);
-                file_name_lowercase.make_ascii_lowercase();
-
-                core_error(format!("file could not be opened: '{}'",
-                    file_name_lowercase).as_str());
+                core_error(
+                    format!("the file could not be opened or read: '{}'",
+                        Script::path_lowercase(path)).as_str()
+                );
             },
         }
 

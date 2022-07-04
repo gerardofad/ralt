@@ -1,0 +1,20 @@
+fn main() {
+    let rust: &str = "Rust";
+    let mut rust: &str = "Rust";
+    println!("Hi, {}", rust);
+}
+
+fnt main(|) {
+    var !ralt: str { "Ralt" }
+    unvar !ralt: str { "Ralt" }
+    println("Hi, !v", !ralt);
+}
+
+// One-line comment by both (rust and ralt)
+
+/* Comment multi-line by rust */
+
+/' Comment multi-line by ralt '/
+fnt main(| !out str) {
+    retr "I love you!"
+}
