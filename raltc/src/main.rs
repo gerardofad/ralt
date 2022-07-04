@@ -3,9 +3,9 @@ use raltc_script::script::Item;
 use raltc_cleaner::cleaner::cleaner;
 
 fn main() {
-    let mut script = Script::new();
+    let mut script = Script::new_script("../Testing/main.rt");
+    script.scan();
 
-    script.scan("../Testing/main.rt");
     cleaner(&mut script);
 
     let mut character: Item = Item::new();

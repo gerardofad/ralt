@@ -1,5 +1,6 @@
 use raltc_script::script::Script;
 use raltc_script::script::Item;
+use raltc_language_error::language_error::language_error;
 
 pub fn cleaner(script: &mut Script) {
     let mut transfer_script: Script = Script::new();
@@ -15,6 +16,10 @@ pub fn cleaner(script: &mut Script) {
             // is comment? ('/*...*/', "/'...'/" or '//...')
             //  or division bar ('/')
             "/" => {
+
+                // initial file-position of token (comments)
+                token.line_number = character.line_number;
+                token.char_number = character.char_number;
 
                 if script.contains() {
                     next_character = script.see();
@@ -42,6 +47,34 @@ pub fn cleaner(script: &mut Script) {
                                     .to_owned() +
                                 next_character.value.as_str()
                             );
+
+                            let mut end_comment = false;
+
+                            while script.contains() {
+                                next_character = script.remove();
+                                token.value.push_str(next_character
+                                    .value.as_str());
+
+                                // content of comment ("/*'...'*/")
+                                if next_character
+                                    .value.as_str() != "*" {
+                                    continue;
+                                }
+
+                                // end of comment ('*/')
+                                if script.contains() &&
+                                    script.see()
+                                    .value.as_str() == "/" {
+
+                                    end_comment = true;
+                                    break;
+                                }
+                            }
+
+                            if !end_comment {
+                                language_error("unfinished comment",
+                                    &token, &script.path);
+                            }
                             continue;
                         },
 

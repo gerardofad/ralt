@@ -14,6 +14,7 @@ dependencies = [
 name = "raltc_cleaner"
 version = "0.1.0"
 dependencies = [
+ "raltc_language_error",
  "raltc_script",
 ]
 
@@ -27,6 +28,14 @@ dependencies = [
 [[package]]
 name = "raltc_error"
 version = "0.1.0"
+
+[[package]]
+name = "raltc_language_error"
+version = "0.1.0"
+dependencies = [
+ "raltc_error",
+ "raltc_script",
+]
 
 [[package]]
 name = "raltc_script"

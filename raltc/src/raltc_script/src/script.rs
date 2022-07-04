@@ -4,6 +4,7 @@ use std::path::Path;
 use raltc_core_error::core_error::core_error;
 
 pub struct Script {
+    pub path:  String,
     pub value: Vec<Item>,
     pub iter:  usize,
 }
@@ -22,12 +23,21 @@ fn assert_contains(value: &Vec<Item>, iter: &usize) {
 impl Script {
     pub fn new() -> Script {
         Script {
+            path:  String::new(),
             value: vec![],
             iter:  0,
         }
     }
 
-    pub fn exists(path: &str) -> bool {
+    pub fn new_script(path: &str) -> Script {
+        Script {
+            path:  String::from(path),
+            value: vec![],
+            iter:  0,
+        }
+    }
+
+    pub fn exists(path: &String) -> bool {
         Path::new(path).exists()
     }
 
@@ -51,28 +61,30 @@ impl Script {
         self.value.remove(0)
     }
 
-    fn path_lowercase(path: &str) -> String {
-        let mut path_lowercase = String::from(path);
-        path_lowercase.make_ascii_lowercase();
-        path_lowercase
-    }
+    pub fn scan(&mut self) {
+        if !Script::exists(&self.path) {
+            let mut path_lowercase = self.path.clone();
+            path_lowercase.make_ascii_lowercase();
 
-    pub fn scan(&mut self, path: &str) {
-        if !Script::exists(path) {
             core_error(
-                format!("file does not exist: '{}'",
-                    Script::path_lowercase(path)).as_str()
+                format!("unexists file: '{}'",
+                    path_lowercase).as_str()
             );
         }
 
-        let file = fs::read_to_string(path);
+        let file = fs::read_to_string(self.path.as_str());
 
         match file {
             Ok(_)  => {},
             Err(_) => {
+                let mut path_lowercase = self.path.clone();
+                path_lowercase.make_ascii_lowercase();
+
                 core_error(
-                    format!("the file could not be opened or read: '{}'",
-                        Script::path_lowercase(path)).as_str()
+                    format!(
+                        "unexpected to open or read file: '{}'",
+                        path_lowercase,
+                    ).as_str()
                 );
             },
         }
@@ -99,6 +111,8 @@ impl Script {
 
     pub fn clone(&self) -> Script {
         let mut script = Script::new();
+        script.path = self.path.clone();
+        script.iter = self.iter;
 
         for item in &self.value {
             script.value.push(item.clone());
