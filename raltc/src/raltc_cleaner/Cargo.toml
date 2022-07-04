@@ -1,0 +1,9 @@
+[package]
+
+name    = "raltc_cleaner"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+
+raltc_script = { path = "../raltc_script" }

@@ -10,11 +10,11 @@ fnt main(|) {
     println("Hi, !v", !ralt);
 }
 
-// One-line comment by both (rust and ralt)
+// one-line comment by both (rust and ralt)
 
-/* Comment multi-line by rust */
+/* comment multi-line by rust */
 
-/' Comment multi-line by ralt '/
+/' comment multi-line by ralt '/
 fnt main(| !out str) {
     retr "I love you!"
 }

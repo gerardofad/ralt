@@ -6,14 +6,15 @@ version = 3
 name = "raltc"
 version = "0.1.0"
 dependencies = [
- "raltc_core",
+ "raltc_cleaner",
+ "raltc_script",
 ]
 
 [[package]]
-name = "raltc_core"
+name = "raltc_cleaner"
 version = "0.1.0"
 dependencies = [
- "raltc_core_error",
+ "raltc_script",
 ]
 
 [[package]]
@@ -26,3 +27,10 @@ dependencies = [
 [[package]]
 name = "raltc_error"
 version = "0.1.0"
+
+[[package]]
+name = "raltc_script"
+version = "0.1.0"
+dependencies = [
+ "raltc_core_error",
+]

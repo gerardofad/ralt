@@ -6,4 +6,5 @@ edition = "2021"
 
 [dependencies]
 
-raltc_core = { path = "src/raltc_core" }
+raltc_script  = { path = "src/raltc_script" }
+raltc_cleaner = { path = "src/raltc_cleaner" }
