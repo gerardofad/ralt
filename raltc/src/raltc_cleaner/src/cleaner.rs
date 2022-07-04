@@ -4,6 +4,7 @@ use raltc_script::script::Item;
 pub fn cleaner(script: &mut Script) {
     let mut transfer_script: Script = Script::new();
     let mut character = Item::new();
+    let mut next_character = Item::new();
     let mut token = Item::new();
 
     while script.contains() {
@@ -14,42 +15,58 @@ pub fn cleaner(script: &mut Script) {
             // is comment? ('/*...*/', "/'...'/" or '//...')
             //  or division bar ('/')
             "/" => {
-                token = character.clone(); // initial character of token
 
                 if script.contains() {
-                    character = script.see();
-                    token.value.push_str(
-                        character.value.clone().as_str()
-                    );
+                    next_character = script.see();
 
-                    match character.value.as_str() {
+                    match next_character.value.as_str() {
 
                         // is comment of one-line ('//...')
                         "/" => {
                             script.remove();
+
+                            while script.contains() &&
+                                script.remove()
+                                .value.as_str() != "\n" {} 
+
+                            continue;
                         },
 
                         // is comment of multi-line ('/*...*/')
                         "*" => {
                             script.remove();
+
+                            // add comment opening ('/*')
+                            token.value = String::from(
+                                character.value.as_str()
+                                    .to_owned() +
+                                next_character.value.as_str()
+                            );
+                            continue;
                         },
 
                         // is comment of multi-line ("/'...'/")
                         "'" => {
                             script.remove();
+
+                            // add comment opening ("/'")
+                            token.value = String::from(
+                                character.value.as_str()
+                                    .to_owned() +
+                                next_character.value.as_str()
+                            );
+                            continue;
                         },
 
-                        // other character (token of code)
-                        _ => {
-                            script.remove();
-                            transfer_script.value.push(
-                                character.clone()
-                            );
-                        },
+                        // other character (token of code),
+                        //  leave it for the next iteration
+                        _ => {},
                     }
                 }
 
-                print!(" (-[{}]-) ", token.value);
+                transfer_script.value.push(
+                    character.clone()
+                );
             },
 
             // other character (token of code)

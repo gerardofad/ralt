@@ -17,6 +17,6 @@ fn main() {
             continue;
         }
 
-        //print!("[{}] ", character.value);
+        print!("[{}] ", character.value);
     }
 }
