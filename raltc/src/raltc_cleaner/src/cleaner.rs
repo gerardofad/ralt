@@ -9,8 +9,9 @@ pub fn cleaner(script: &mut Script) {
     let mut next_character = Item::new();
     let mut token          = Item::new();
 
-    let mut is_string: bool   = false;
-    let mut quote:     String = String::new();
+    let mut space_exists: bool   = false;
+    let mut is_string:    bool   = false;
+    let mut quote:        String = String::new();
 
     while script.contains() {
         character = script.remove(); // remove first
@@ -140,8 +141,29 @@ pub fn cleaner(script: &mut Script) {
                 );
             },
 
+            // replace united whitespaces in 1 normal space
+            //  (including whitespaces between comments)
+            " " | "\t" | "\r" | "\n" => {
+
+                // add only 1 normal space
+                if !space_exists && !is_string {
+                    space_exists = true;
+                    character.value = " ".to_string();
+                    transfer_script.value.push(character.clone());
+                    continue;
+                }
+
+                // add whitespaces of content of strings
+                //  (without changes)
+                if is_string {
+                    transfer_script.value.push(character.clone());
+                }
+            },
+
             // other character (token of code)
             _ => {
+                // disable whitespaces joiner
+                if space_exists { space_exists = false; }
 
                 // String ( "..." ) - (no remove 'comments'
                 //  inside strings)
