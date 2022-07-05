@@ -13,8 +13,8 @@ pub fn cleaner(script: &mut Script) {
 
         match character.value.as_str() {
 
-            // is comment? ('/*...*/', "/'...'/" or '//...')
-            //  or division bar ('/')
+            // is comment? ( /*...*/ | /'...'/ | //... )
+            //  or division bar ( / )
             "/" => {
 
                 // initial file-position of token (comments)
@@ -26,7 +26,7 @@ pub fn cleaner(script: &mut Script) {
 
                     match next_character.value.as_str() {
 
-                        // is comment of one-line ('//...')
+                        // is comment of one-line ( //... )
                         "/" => {
                             script.remove();
 
@@ -37,11 +37,11 @@ pub fn cleaner(script: &mut Script) {
                             continue;
                         },
 
-                        // is comment of multi-line ('/*...*/')
+                        // is comment of multi-line ( /*...*/ )
                         "*" => {
                             script.remove();
 
-                            // add comment opening ('/*')
+                            // add comment opening ( /* )
                             token.value = String::from(
                                 character.value.as_str()
                                     .to_owned() +
@@ -55,17 +55,18 @@ pub fn cleaner(script: &mut Script) {
                                 token.value.push_str(next_character
                                     .value.as_str());
 
-                                // content of comment ("/*'...'*/")
+                                // content of comment ( /*[...]*/ )
                                 if next_character
                                     .value.as_str() != "*" {
                                     continue;
                                 }
 
-                                // end of comment ('*/')
+                                // end of comment ( */ )
                                 if script.contains() &&
                                     script.see()
                                     .value.as_str() == "/" {
 
+                                    script.remove();
                                     end_comment = true;
                                     break;
                                 }
@@ -78,16 +79,45 @@ pub fn cleaner(script: &mut Script) {
                             continue;
                         },
 
-                        // is comment of multi-line ("/'...'/")
+                        // is comment of multi-line ( /'...'/ )
                         "'" => {
                             script.remove();
 
-                            // add comment opening ("/'")
+                            // add comment opening ( /' )
                             token.value = String::from(
                                 character.value.as_str()
                                     .to_owned() +
                                 next_character.value.as_str()
                             );
+
+                            let mut end_comment = false;
+
+                            while script.contains() {
+                                next_character = script.remove();
+                                token.value.push_str(next_character
+                                    .value.as_str());
+
+                                // content of comment ( /'[...]'/ )
+                                if next_character
+                                    .value.as_str() != "'" {
+                                    continue;
+                                }
+
+                                // end of comment ( '/ )
+                                if script.contains() &&
+                                    script.see()
+                                    .value.as_str() == "/" {
+                                    
+                                    script.remove();
+                                    end_comment = true;
+                                    break;
+                                }
+                            }
+
+                            if !end_comment {
+                                language_error("unfinished comment",
+                                    &token, &script.path);
+                            }
                             continue;
                         },
 
