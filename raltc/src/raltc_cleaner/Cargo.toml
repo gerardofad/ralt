@@ -7,4 +7,5 @@ edition = "2021"
 [dependencies]
 
 raltc_script         = { path = "../raltc_script" }
+raltc_tokens         = { path = "../raltc_tokens" }
 raltc_language_error = { path = "../raltc_language_error" }

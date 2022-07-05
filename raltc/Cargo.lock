@@ -16,6 +16,7 @@ version = "0.1.0"
 dependencies = [
  "raltc_language_error",
  "raltc_script",
+ "raltc_tokens",
 ]
 
 [[package]]
@@ -43,3 +44,7 @@ version = "0.1.0"
 dependencies = [
  "raltc_core_error",
 ]
+
+[[package]]
+name = "raltc_tokens"
+version = "0.1.0"

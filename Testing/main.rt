@@ -12,9 +12,9 @@ fnt main(|) {
 
 // one-line comment by both (rust and ralt)
 
-/* comment multi-line by rust */
+/* multi-line comment by rust */
 
-/' comment multi-line by ralt '/
+/' multi-line comment by ralt '/
 fnt main(| !out str) {
     retr "I love you!"
 }

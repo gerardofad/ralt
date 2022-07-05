@@ -1,12 +1,16 @@
 use raltc_script::script::Script;
 use raltc_script::script::Item;
+use raltc_tokens::literals;
 use raltc_language_error::language_error::language_error;
 
 pub fn cleaner(script: &mut Script) {
     let mut transfer_script: Script = Script::new();
     let mut character = Item::new();
     let mut next_character = Item::new();
-    let mut token = Item::new();
+    let mut token          = Item::new();
+
+    let mut is_string: bool   = false;
+    let mut quote:     String = String::new();
 
     while script.contains() {
         character = script.remove(); // remove first
@@ -16,6 +20,10 @@ pub fn cleaner(script: &mut Script) {
             // is comment? ( /*...*/ | /'...'/ | //... )
             //  or division bar ( / )
             "/" => {
+                if is_string {
+                    transfer_script.value.push(character.clone());
+                    continue;
+                }
 
                 // initial file-position of token (comments)
                 token.line_number = character.line_number;
@@ -134,6 +142,53 @@ pub fn cleaner(script: &mut Script) {
 
             // other character (token of code)
             _ => {
+
+                // String ( "..." ) - (no remove 'comments'
+                //  inside strings)
+                if character.value == literals::QUOTE_GRAPHEMES
+                    .to_string() {
+
+                    if !is_string {
+                        is_string = true;
+                        quote = literals::QUOTE_GRAPHEMES
+                            .to_string();
+
+                    } else if quote == literals::QUOTE_GRAPHEMES
+                        .to_string() {
+                        is_string = false;
+                    }
+
+                // String ( ¨...¨ ) - (no remove 'comments'
+                //  inside strings)
+                } else if character.value == literals::QUOTE_CHARACTERS
+                    .to_string() {
+
+                    if !is_string {
+                        is_string = true;
+                        quote = literals::QUOTE_CHARACTERS
+                            .to_string();
+                            
+                    } else if quote == literals::QUOTE_CHARACTERS
+                        .to_string() {
+                        is_string = false;
+                    }
+                
+                // String ( ¨...¨ ) - (no remove 'comments'
+                //  inside strings)
+                } else if character.value == literals::QUOTE_BYTES
+                    .to_string() {
+
+                    if !is_string {
+                        is_string = true;
+                        quote = literals::QUOTE_BYTES
+                            .to_string();
+                            
+                    } else if quote == literals::QUOTE_BYTES
+                        .to_string() {
+                        is_string = false;
+                    }
+                }
+
                 transfer_script.value.push(character.clone());
             },
         }
