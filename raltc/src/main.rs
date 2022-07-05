@@ -8,7 +8,7 @@ fn main() {
 
     cleaner(&mut script);
 
-    let mut character: Item = Item::new();
+    let mut character: Item;
     
     while script.contains() {
         character = script.get();

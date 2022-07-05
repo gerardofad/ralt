@@ -131,7 +131,7 @@ pub struct Item {
 impl Item {
     pub fn new() -> Item {
         Item {
-            value:       String::from(""),
+            value:       String::new(),
             line_number: 1,
             char_number: 0,
         }

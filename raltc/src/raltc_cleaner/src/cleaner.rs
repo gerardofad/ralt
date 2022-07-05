@@ -3,11 +3,12 @@ use raltc_script::script::Item;
 use raltc_tokens::literals;
 use raltc_language_error::language_error::language_error;
 
+// Remove comments and replace for 1 space all united whitespaces
 pub fn cleaner(script: &mut Script) {
     let mut transfer_script: Script = Script::new();
-    let mut character = Item::new();
-    let mut next_character = Item::new();
-    let mut token          = Item::new();
+    let mut character:      Item;
+    let mut next_character: Item;
+    let mut token = Item::new();
 
     let mut space_exists: bool   = false;
     let mut is_string:    bool   = false;
@@ -22,7 +23,7 @@ pub fn cleaner(script: &mut Script) {
             //  or division bar ( / )
             "/" => {
                 if is_string {
-                    transfer_script.value.push(character.clone());
+                    transfer_script.value.push(character);
                     continue;
                 }
 
@@ -136,9 +137,7 @@ pub fn cleaner(script: &mut Script) {
                     }
                 }
 
-                transfer_script.value.push(
-                    character.clone()
-                );
+                transfer_script.value.push(character);
             },
 
             // replace united whitespaces in 1 normal space
@@ -149,14 +148,14 @@ pub fn cleaner(script: &mut Script) {
                 if !space_exists && !is_string {
                     space_exists = true;
                     character.value = " ".to_string();
-                    transfer_script.value.push(character.clone());
+                    transfer_script.value.push(character);
                     continue;
                 }
 
                 // add whitespaces of content of strings
                 //  (without changes)
                 if is_string {
-                    transfer_script.value.push(character.clone());
+                    transfer_script.value.push(character);
                 }
             },
 
@@ -211,12 +210,12 @@ pub fn cleaner(script: &mut Script) {
                     }
                 }
 
-                transfer_script.value.push(character.clone());
+                transfer_script.value.push(character);
             },
         }
     }
 
-    for character in &transfer_script.value {
-        script.value.push(character.clone());
+    while transfer_script.contains() {
+        script.value.push(transfer_script.remove());
     }
 }
