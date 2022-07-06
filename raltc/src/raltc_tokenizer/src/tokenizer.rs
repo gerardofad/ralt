@@ -1,17 +1,13 @@
 use raltc_script::script::Script;
 use raltc_script::script::Item;
-use raltc_tokens::literals;
 use raltc_tokens::table::Table;
-use raltc_tokens::number_as_id;
-
-macro_rules! string_is_lowercase_letter {
-    () => {
-        "a" | "b" | "c" | "d" | "e" | "f" | "g" |
-        "h" | "i" | "j" | "k" | "l" | "m" | "n" |
-        "o" | "p" | "q" | "r" | "s" | "t" | "u" |
-        "v" | "w" | "x" | "y" | "z"
-    }
-}
+use raltc_tokens::{
+    literals,
+    number_as_id,
+    string_is_letter,
+    string_is_lowercase_letter,
+    string_is_uppercase_letter,
+};
 
 // Get all tokens of code - (process after of 'cleaner')
 pub fn tokenizer(script: &mut Script) {
@@ -30,15 +26,31 @@ pub fn tokenizer(script: &mut Script) {
                 continue;
             },
 
-            // is name ( !name ) or keyword ( fnt | main )
-            string_is_lowercase_letter!() | "!" => {
+            // is name ( !name | name ) or keyword ( fnt | main )
+            // | start name ( ! )
+            string_is_letter!() |
+            literals::START_NAME_EXCLAMATION |
+            literals::START_NAME_UNDERSCORE => {
+
                 script.remove();
                 token = character.clone();
 
-                if character.value.as_str() == "!" {
-                    token.id = number_as_id!(Table::Name);
-                } else {
-                    token.id = number_as_id!(Table::Keyword);
+                match character.value.as_str() {
+                    // is name ( !name | _name )
+                    literals::START_NAME_EXCLAMATION |
+                    literals::START_NAME_UNDERSCORE => {
+                        token.id = number_as_id!(Table::Name);
+                    },
+
+                    // is keyword ( fnt )
+                    string_is_lowercase_letter!() => {
+                        token.id = number_as_id!(Table::Keyword);
+                    },
+
+                    // default is name
+                    string_is_uppercase_letter!() | _ => {
+                        token.id = number_as_id!(Table::Name);
+                    },
                 }
 
                 while script.contains() {
@@ -47,8 +59,27 @@ pub fn tokenizer(script: &mut Script) {
                     match character.value.as_str() {
                         // continuation of name or keyword
                         //  (not first character)
-                        string_is_lowercase_letter!() => {
+                        string_is_letter!() => {
                             script.remove();
+
+                            if token.id == number_as_id!(
+                                Table::Keyword) {
+                                match character
+                                    .value.as_str() {
+
+                                    // is name ( Name )
+                                    string_is_uppercase_letter!()
+                                        => {
+                                        token.id = number_as_id!(
+                                            Table::Name
+                                        );
+                                    },
+                                    
+                                    // do nothing
+                                    _ => {},
+                                }
+                            }
+
                             token.value.push_str(
                                 character.value.as_str(),
                             );

@@ -1,12 +1,12 @@
 fn main() {
-    let rust: &str = "Rust";
-    let mut rust: &str = "Rust";
+    let Rust: &str = "Rust";
+    let mut rust_mut: &str = "Rust";
     println!("Hi, {}", rust);
 }
 
 fnt main(|) {
-    var !ralt: str { "Ralt" }
-    unvar !ralt: str { "Ralt" }
+    var !Ralt: str { "Ralt" }
+    unvar !ralt-immut: str { "Ralt" }
     println("Hi, !v", !ralt);
 }
 
