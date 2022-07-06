@@ -8,4 +8,3 @@ edition = "2021"
 
 raltc_script         = { path = "../raltc_script" }
 raltc_tokens         = { path = "../raltc_tokens" }
-raltc_language_error = { path = "../raltc_language_error" }

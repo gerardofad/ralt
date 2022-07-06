@@ -1,8 +1,10 @@
 use std::fs;
 use std::path::Path;
 
+use raltc_tokens::table::Table;
 use raltc_core_error::core_error::core_error;
 
+// more complete file handler for 'scripts' of languages
 pub struct Script {
     pub path:  String,
     pub value: Vec<Item>,
@@ -102,6 +104,7 @@ impl Script {
             }
 
             self.value.push(Item {
+                id:          Table::Illegal as u8,
                 value:       String::from(character),
                 line_number: line_number,
                 char_number: char_number,
@@ -122,7 +125,9 @@ impl Script {
     }
 }
 
+// item handler of file (characters, tokens, ...)
 pub struct Item {
+    pub id:          u8,
     pub value:       String,
     pub line_number: usize,
     pub char_number: usize,
@@ -131,6 +136,7 @@ pub struct Item {
 impl Item {
     pub fn new() -> Item {
         Item {
+            id:          Table::Illegal as u8,
             value:       String::new(),
             line_number: 1,
             char_number: 0,
@@ -139,6 +145,7 @@ impl Item {
 
     pub fn clone(&self) -> Item {
         Item {
+            id:          self.id,
             value:       self.value.clone(),
             line_number: self.line_number,
             char_number: self.char_number,

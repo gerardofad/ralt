@@ -6,8 +6,8 @@ use raltc_language_error::language_error::language_error;
 // Remove comments and replace for 1 space all united whitespaces
 pub fn cleaner(script: &mut Script) {
     let mut transfer_script: Script = Script::new();
-    let mut character:      Item;
-    let mut next_character: Item;
+    let mut character:       Item;
+    let mut next_character:  Item;
     let mut token = Item::new();
 
     let mut space_exists: bool   = false;
@@ -147,7 +147,9 @@ pub fn cleaner(script: &mut Script) {
                 // add only 1 normal space
                 if !space_exists && !is_string {
                     space_exists = true;
-                    character.value = " ".to_string();
+                    character.value = String::from(
+                        literals::SPACE
+                    );
                     transfer_script.value.push(character);
                     continue;
                 }
@@ -215,6 +217,7 @@ pub fn cleaner(script: &mut Script) {
         }
     }
 
+    // rewrite changes
     while transfer_script.contains() {
         script.value.push(transfer_script.remove());
     }

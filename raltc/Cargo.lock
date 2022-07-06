@@ -43,6 +43,7 @@ name = "raltc_script"
 version = "0.1.0"
 dependencies = [
  "raltc_core_error",
+ "raltc_tokens",
 ]
 
 [[package]]
