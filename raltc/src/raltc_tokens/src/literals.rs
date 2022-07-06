@@ -1,4 +1,4 @@
-pub const QUOTE_GRAPHEMES:  char = '"';
-pub const QUOTE_CHARACTERS: char = '¨';
-pub const QUOTE_BYTES:      char = '\'';
-pub const SPACE:            char = ' ';
+pub const QUOTE_GRAPHEMES:  &str = "\"";
+pub const QUOTE_CHARACTERS: &str = "¨";
+pub const QUOTE_BYTES:      &str = "'";
+pub const SPACE:            &str = " ";

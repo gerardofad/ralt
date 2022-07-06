@@ -8,6 +8,7 @@ version = "0.1.0"
 dependencies = [
  "raltc_cleaner",
  "raltc_script",
+ "raltc_tokenizer",
 ]
 
 [[package]]
@@ -43,6 +44,14 @@ name = "raltc_script"
 version = "0.1.0"
 dependencies = [
  "raltc_core_error",
+ "raltc_tokens",
+]
+
+[[package]]
+name = "raltc_tokenizer"
+version = "0.1.0"
+dependencies = [
+ "raltc_script",
  "raltc_tokens",
 ]
 

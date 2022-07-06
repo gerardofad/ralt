@@ -2,6 +2,7 @@ use std::fs;
 use std::path::Path;
 
 use raltc_tokens::table::Table;
+use raltc_tokens::number_as_id;
 use raltc_core_error::core_error::core_error;
 
 // more complete file handler for 'scripts' of languages
@@ -104,7 +105,7 @@ impl Script {
             }
 
             self.value.push(Item {
-                id:          Table::Illegal as u8,
+                id:          number_as_id!(Table::Illegal),
                 value:       String::from(character),
                 line_number: line_number,
                 char_number: char_number,
@@ -136,7 +137,7 @@ pub struct Item {
 impl Item {
     pub fn new() -> Item {
         Item {
-            id:          Table::Illegal as u8,
+            id:          number_as_id!(Table::Illegal),
             value:       String::new(),
             line_number: 1,
             char_number: 0,
