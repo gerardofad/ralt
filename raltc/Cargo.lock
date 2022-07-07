@@ -10,9 +10,14 @@ dependencies = [
 ]
 
 [[package]]
+name = "raltc_error"
+version = "0.1.0"
+
+[[package]]
 name = "raltc_lexer"
 version = "0.1.0"
 dependencies = [
+ "raltc_error",
  "raltc_path",
  "raltc_token",
 ]
