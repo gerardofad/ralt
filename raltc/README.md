@@ -1,17 +1,5 @@
 # Guide to raltc development in Rust
 
-### Remove
-
-raltc_cleaner
-raltc_core_error
-raltc_error
-raltc_language_error
-raltc_script
-raltc_tokenizer
-raltc_tokens
-
----
-
 ## Cleaner (core: 'raltc_cleaner')
 Remove comments (one-line ( //... ) or multi-line ( /\*...\*/ | /'...'/ ))
 

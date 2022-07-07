@@ -1,3 +1,6 @@
+use std::path::Path;
+
+use raltc_error::error::Error;
 use raltc_token::token::Token;
 
 // Lexicographic analyzer for 1 file
@@ -23,6 +26,12 @@ impl Lexer {
         lexer
     }
 
+    pub fn exists(path: &String) -> bool { Path::exists(path.as_str()) }
+
     pub fn scan(path: String) -> Lexer {
+        if Lexer::exists(&path) {
+            panic!(format!("the '{}' file does not exist in '{}'",
+                path, path));
+        }
     }
 }
