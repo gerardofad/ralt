@@ -1,7 +1,7 @@
 use std::path::Path;
 
-use raltc_error::error::Error;
 use raltc_token::token::Token;
+use raltc_path::standarize_path::standarize_path;
 
 // Lexicographic analyzer for 1 file
 pub struct Lexer {
@@ -17,21 +17,17 @@ impl Lexer {
         }
     }
 
-    pub fn clone(&self) -> Lexer {
-        let mut lexer: Lexer = Lexer::new();
-        lexer.path = self.path;
-        for token in &self.value {
-            lexer.push(token);
-        }
-        lexer
-    }
+    pub fn get_path(&self) -> String { self.path.clone() }
+    pub fn remove(&mut self) { self.value.remove(0); }
+    pub fn push(&mut self, token: &Token) { self.value.push(token.clone()); }
+    pub fn exists(path: &String) -> bool { Path::new(path).exists() }
 
-    pub fn exists(path: &String) -> bool { Path::exists(path.as_str()) }
-
-    pub fn scan(path: String) -> Lexer {
+    pub fn scan(&self, path: String) -> Lexer {
         if Lexer::exists(&path) {
-            panic!(format!("the '{}' file does not exist in '{}'",
-                path, path));
+            panic!("the '{}' file does not exist in '{}'",
+                standarize_path(&path), standarize_path(&path));
         }
+
+        *self
     }
 }

@@ -6,55 +6,21 @@ version = 3
 name = "raltc"
 version = "0.1.0"
 dependencies = [
- "raltc_cleaner",
- "raltc_script",
- "raltc_tokenizer",
+ "raltc_lexer",
 ]
 
 [[package]]
-name = "raltc_cleaner"
+name = "raltc_lexer"
 version = "0.1.0"
 dependencies = [
- "raltc_language_error",
- "raltc_script",
- "raltc_tokens",
+ "raltc_path",
+ "raltc_token",
 ]
 
 [[package]]
-name = "raltc_core_error"
-version = "0.1.0"
-dependencies = [
- "raltc_error",
-]
-
-[[package]]
-name = "raltc_error"
+name = "raltc_path"
 version = "0.1.0"
 
 [[package]]
-name = "raltc_language_error"
-version = "0.1.0"
-dependencies = [
- "raltc_error",
- "raltc_script",
-]
-
-[[package]]
-name = "raltc_script"
-version = "0.1.0"
-dependencies = [
- "raltc_core_error",
- "raltc_tokens",
-]
-
-[[package]]
-name = "raltc_tokenizer"
-version = "0.1.0"
-dependencies = [
- "raltc_script",
- "raltc_tokens",
-]
-
-[[package]]
-name = "raltc_tokens"
+name = "raltc_token"
 version = "0.1.0"

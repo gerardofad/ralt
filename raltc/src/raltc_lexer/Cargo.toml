@@ -7,4 +7,4 @@ edition = "2021"
 [dependencies]
 
 raltc_token = { path = "../raltc_token" }
-raltc_error = { path = "../raltc_error" }
+raltc_path  = { path = "../raltc_path" }
