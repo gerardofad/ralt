@@ -6,4 +6,4 @@ edition = "2021"
 
 [dependencies]
 
-raltc_lexer = { path = "src/raltc_lexer" }
+raltc_script = { path = "src/raltc_script" }

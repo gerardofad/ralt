@@ -6,26 +6,16 @@ version = 3
 name = "raltc"
 version = "0.1.0"
 dependencies = [
- "raltc_lexer",
+ "raltc_script",
 ]
 
 [[package]]
-name = "raltc_error"
+name = "raltc_failure"
 version = "0.1.0"
 
 [[package]]
-name = "raltc_lexer"
+name = "raltc_script"
 version = "0.1.0"
 dependencies = [
- "raltc_error",
- "raltc_path",
- "raltc_token",
+ "raltc_failure",
 ]
-
-[[package]]
-name = "raltc_path"
-version = "0.1.0"
-
-[[package]]
-name = "raltc_token"
-version = "0.1.0"
