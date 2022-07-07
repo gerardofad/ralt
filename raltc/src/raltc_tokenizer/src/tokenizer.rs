@@ -59,7 +59,7 @@ pub fn tokenizer(script: &mut Script) {
                     match character.value.as_str() {
                         // continuation of name or keyword
                         //  (not first character)
-                        string_is_letter!() => {
+                        string_is_letter!() | "_" | "-" => {
                             script.remove();
 
                             if token.id == number_as_id!(
@@ -88,6 +88,54 @@ pub fn tokenizer(script: &mut Script) {
                         // end of name or keyword
                         _ => { break; },
                     }
+                }
+
+                transfer_script.value.push(token);
+            },
+
+            // is string of graphemes
+            "\"" => {
+                script.remove();
+                token = character;
+                token.id = number_as_id!(Table::String);
+
+                while script.contains() {
+                    character = script.remove();
+
+                    if character.value.as_str() != "\"" {
+                        token.value.push_str(
+                            character.value.as_str(),
+                        );
+                        continue;
+                    }
+                    token.value.push_str(
+                        character.value.as_str(),
+                    );
+                    break;
+                }
+
+                transfer_script.value.push(token);
+            },
+
+            // is string of bytes
+            "'" => {
+                script.remove();
+                token = character;
+                token.id = number_as_id!(Table::String);
+
+                while script.contains() {
+                    character = script.remove();
+
+                    if character.value.as_str() != "'" {
+                        token.value.push_str(
+                            character.value.as_str(),
+                        );
+                        continue;
+                    }
+                    token.value.push_str(
+                        character.value.as_str(),
+                    );
+                    break;
                 }
 
                 transfer_script.value.push(token);
