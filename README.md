@@ -1,2 +1,2 @@
 # The Ralt framework for Rust
-**R**ob**ust**
+**R**ob**ust** framework for overall development
