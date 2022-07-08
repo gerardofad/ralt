@@ -20,6 +20,14 @@ pub struct Chars {
     value: Vec<Char>,
 }
 
+impl Chars {
+    pub fn new() -> Chars {
+        Chars {
+            value: vec![],
+        }
+    }
+}
+
 pub struct Char {
     value:       String,
     line_number: usize,
@@ -57,6 +65,23 @@ impl Char {
         }
     }
 
+    pub fn give(&mut self) -> Char  {
+        let character: Char = Char {
+            value:       self.value.clone(),
+            line_number: self.line_number,
+            char_number: self.char_number,
+        };
+
+        // Clean the character (struct 'Char') after giving its value
+        *self = Char {
+            value:       String::new(),
+            line_number: 0,
+            char_number: 0,
+        };
+
+        character
+    }
+
     pub fn clone(&self) -> Char {
         Char {
             value:       self.value.clone(),
@@ -65,6 +90,7 @@ impl Char {
         }
     }
 
+    pub fn remove(&mut self) { *self = Char::new(); }
     pub fn as_str(&self) -> &str { self.value.as_str() }
     pub fn as_string(&self) -> String { self.value.clone() }
 }
