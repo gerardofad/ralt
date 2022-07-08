@@ -62,3 +62,31 @@ let character_as_str: &str = character.as_str(); // I
 let character_as_string: String = character.as_string(); // I
 ```
 > get the value as a standard string module ( String )
+
+---
+
+```Rust
+character.new_line_number(1);
+```
+> assign a line number of the character's file position
+
+---
+
+```Rust
+character.new_char_number(9);
+```
+> assign a character number of the character's file position
+
+---
+
+```Rust
+let line_number = character.get_line_number();
+```
+> obtain the line number of the character's file position
+
+---
+
+```Rust
+let char_number = character.get_char_number();
+```
+> obtain the character number of the character's file position

@@ -93,6 +93,16 @@ impl Char {
     pub fn remove(&mut self) { *self = Char::new(); }
     pub fn as_str(&self) -> &str { self.value.as_str() }
     pub fn as_string(&self) -> String { self.value.clone() }
+    pub fn get_line_number(&self) -> usize { self.line_number }
+    pub fn get_char_number(&self) -> usize { self.char_number }
+
+    pub fn new_line_number(&mut self, line_number: usize) {
+        self.line_number = line_number;
+    }
+
+    pub fn new_char_number(&mut self, char_number: usize) {
+        self.char_number = char_number;
+    }
 }
 
 // Get and remove first character (in grapheme: "स्" of characters: "स" & " ्")
