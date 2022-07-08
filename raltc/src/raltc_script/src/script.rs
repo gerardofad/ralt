@@ -1,3 +1,7 @@
+use std::panic;
+
+use raltc_failure::failure;
+
 pub struct Script {
     path: String,
     file: Items,
@@ -22,6 +26,7 @@ pub struct Char {
     char_number: usize,
 }
 
+const MESSAGE_ERROR_STRUCT_CHAR: &str = "struct Char";
 impl Char {
     pub fn new() -> Char {
         Char {
@@ -32,11 +37,24 @@ impl Char {
     }
 
     pub fn from_str(&mut self, character_from_str: &str) {
-        self.value = String::from(character_from_str);
+        let mut character: Char = Char::new();
+        character.from_string(&character_from_str.to_string());
+        self.value = character.as_string();
     }
 
     pub fn from_string(&mut self, character_from_string: &String) {
-        self.value = character_from_string.clone();
+        if character_from_string.is_empty() {
+            failure!("no character has been provided in: '{}'",
+                MESSAGE_ERROR_STRUCT_CHAR);
+        }
+
+        let mut character_from_string_temp = character_from_string.clone();
+        self.value = character(&mut character_from_string_temp);
+
+        if !character_from_string.is_empty() {
+            failure!("the character: '{}' has overflowed with: '{}' in: '{}'",
+                self.value, character_from_string_temp, MESSAGE_ERROR_STRUCT_CHAR);
+        }
     }
 
     pub fn clone(&self) -> Char {
@@ -68,7 +86,7 @@ pub fn character(source: &mut String) -> String {
         },
 
         // Normal characters
-        _ => { full_character.push(source.remove(0)); },
+        _ => { /* Nothing: the character was added earlier by 'begin_part_of_character' (above) */ },
     }
 
     full_character

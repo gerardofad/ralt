@@ -1,5 +1,8 @@
 use raltc_script::script::*;
 
 fn main() {
-    println!("[{}]", character(&mut "सHi!".to_string()));
+    let mut character: Char = Char::new();
+    character.from_str("स्!");
+
+    println!("[{}]", character.as_str());
 }
