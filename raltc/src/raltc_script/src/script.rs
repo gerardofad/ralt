@@ -51,7 +51,7 @@ impl Char {
         let mut character_from_string_temp = character_from_string.clone();
         self.value = character(&mut character_from_string_temp);
 
-        if !character_from_string.is_empty() {
+        if !character_from_string_temp.is_empty() {
             failure!("the character: '{}' has overflowed with: '{}' in: '{}'",
                 self.value, character_from_string_temp, MESSAGE_ERROR_STRUCT_CHAR);
         }
