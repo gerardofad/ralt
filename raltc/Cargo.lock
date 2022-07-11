@@ -14,7 +14,7 @@ name = "raltc_error"
 version = "0.1.0"
 
 [[package]]
-name = "raltc_moduler"
+name = "raltc_file"
 version = "0.1.0"
 dependencies = [
  "raltc_error",
@@ -22,5 +22,19 @@ dependencies = [
 ]
 
 [[package]]
+name = "raltc_moduler"
+version = "0.1.0"
+dependencies = [
+ "raltc_error",
+ "raltc_file",
+ "raltc_path",
+ "raltc_token",
+]
+
+[[package]]
 name = "raltc_path"
+version = "0.1.0"
+
+[[package]]
+name = "raltc_token"
 version = "0.1.0"

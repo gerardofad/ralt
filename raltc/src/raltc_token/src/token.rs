@@ -15,20 +15,20 @@ impl Token {
         }
     }
 
-    pub fn give(&self) -> Token {
+    pub fn give(&mut self) -> Token {
         let token = Token {
             id:          self.id,
             value:       self.value.clone(),
             line_number: self.line_number,
             char_number: self.char_number,
-        }
+        };
 
         *self = Token {
             id:          0,
             value:       String::new(),
             line_number: 0,
             char_number: 0,
-        }
+        };
 
         token
     }

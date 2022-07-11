@@ -1,12 +1,10 @@
 [package]
 
-name    = "raltc_moduler"
+name    = "raltc_file"
 version = "0.1.0"
 edition = "2021"
 
 [dependencies]
 
-raltc_file  = { path = "../raltc_file" }
 raltc_path  = { path = "../raltc_path" }
-raltc_token = { path = "../raltc_token" }
 raltc_error = { path = "../raltc_error" }
