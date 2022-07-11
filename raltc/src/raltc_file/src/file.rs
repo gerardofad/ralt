@@ -6,13 +6,17 @@ use raltc_path::path::*;
 use raltc_error::error;
 
 pub struct File {
-    pub content: String,
+    pub content:     String,
+    pub line_number: usize,
+    pub char_number: usize,
 }
 
 impl File {
     pub fn new() -> File {
         File {
-            content: String::new(),
+            content:     String::new(),
+            line_number: 0,
+            char_number: 0,
         }
     }
 
@@ -47,5 +51,31 @@ impl File {
         }
 
         self.content = file.unwrap();
+    }
+    
+    pub fn see_character(&self) -> char {
+        self.content.chars().next().unwrap()
+    }
+
+    pub fn remove_character(&mut self) -> char {
+        let character = self.content.remove(0);
+
+        // Advance file-position
+        if character == '\n' {
+            self.line_number += 1;
+            self.char_number  = 0;
+        } else {
+            self.char_number += 1;
+        }
+
+        character
+    }
+    
+    pub fn see_graphemic_character(&self) -> String {
+        String::from(self.content.chars().next().unwrap())
+    }
+
+    pub fn remove_graphemic_character(&mut self) -> String {
+        String::from(self.content.remove(0))
     }
 }

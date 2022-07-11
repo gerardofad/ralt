@@ -10,10 +10,12 @@ use raltc_error::error;
 enum Table {
     Directive,          // #
     Name,               // name
-    String,             // "Hi!"
+    StringValue,        // "Hi!"
     Assigner,           // :
     DirectiveOpenWrap,  // [
     DirectiveCloseWrap, // ]
+
+    IllegalUnfinishedString, // "..
     Illegal,
 }
 
@@ -32,20 +34,70 @@ pub fn lexer(path: &str) -> Vec<Token> {
     let mut character: char;
 
     while file.contains() {
-        character = see_character(
-            &mut file.content,
-            &mut line_number,
-            &mut char_number
-        );
+        character = file.see_character();
 
         match character {
 
-            // token: name (get it)
+            // token: name - (get it)
             'a' ..= 'z' => {
-                get_character(&mut file.content,
-                    &mut line_number, &mut char_number);
+                file.remove_character();
 
                 token.id          = Table::Name as u8;
+                token.value       = String::from(character);
+                token.line_number = line_number;
+                token.char_number = char_number;
+
+                while file.contains() {
+                    character = file.see_character();
+
+                    match character {
+                        // name
+                        'a' ..= 'z' => {
+                            file.remove_character();
+                            token.value.push(character);
+
+                        }, _ => { break; }, // end of name
+                    }
+                }
+
+                tokens.push(token.give());
+            },
+
+            // token: string ( ".." )
+            '"' => {
+                file.remove_character();
+
+                token.id          = Table::IllegalUnfinishedString as u8;
+                token.value       = String::from(character);
+                token.line_number = line_number;
+                token.char_number = char_number;
+
+                while file.contains() {
+                    character = file.remove_character();
+
+                    match character {
+                        // end of string
+                        '"' => {
+                            token.id = Table::StringValue as u8;
+                            token.value.remove(0);
+                            break;
+                        },
+
+                        // content of string
+                        _ => {
+                            token.value.push(character);
+                        },
+                    }
+                }
+
+                tokens.push(token.give());
+            },
+
+            // token: directive ( # ) - (get it)
+            '#' => {
+                file.remove_character();
+
+                token.id          = Table::Directive as u8;
                 token.value       = String::from(character);
                 token.line_number = line_number;
                 token.char_number = char_number;
@@ -53,13 +105,69 @@ pub fn lexer(path: &str) -> Vec<Token> {
                 tokens.push(token.give());
             },
 
-            // token: illegal (get it)
-            _ => {
-                get_graphemic_character(&mut file.content,
-                    &mut line_number, &mut char_number);
+            // token: assigner ( : ) - (get it)
+            ':' => {
+                file.remove_character();
+
+                token.id          = Table::Assigner as u8;
+                token.value       = String::from(character);
+                token.line_number = line_number;
+                token.char_number = char_number;
+
+                tokens.push(token.give());
+            },
+
+            // token: directive open wrapper ( [ ) - (get it)
+            '[' => {
+                file.remove_character();
+
+                token.id          = Table::DirectiveOpenWrap as u8;
+                token.value       = String::from(character);
+                token.line_number = line_number;
+                token.char_number = char_number;
+
+                tokens.push(token.give());
+            },
+
+            // token: directive close wrapper ( ] ) - (get it)
+            ']' => {
+                file.remove_character();
+
+                token.id          = Table::DirectiveCloseWrap as u8;
+                token.value       = String::from(character);
+                token.line_number = line_number;
+                token.char_number = char_number;
+
+                tokens.push(token.give());
+            },
+
+            // token: whitespaces - (skip it)
+            ' ' | '\t' | '\r' | '\n' => {
+                file.remove_character();
+                continue;
+            },
+
+            // token: comment (one-line: //.. ) or illegal ( / ) - (skip it)
+            '/' => {
+                file.remove_character();
 
                 token.id          = Table::Illegal as u8;
                 token.value       = String::from(character);
+                token.line_number = line_number;
+                token.char_number = char_number;
+
+                // is comment ( //.. )
+                if file.contains() && file.see_character() == '/' {
+                    while file.contains() && file.see_character() != '\n' {
+                        file.remove_character();
+                    }
+                }
+            },
+
+            // token: illegal - (get it)
+            _ => {
+                token.id          = Table::Illegal as u8;
+                token.value       = file.remove_graphemic_character();
                 token.line_number = line_number;
                 token.char_number = char_number;
 
@@ -69,30 +177,4 @@ pub fn lexer(path: &str) -> Vec<Token> {
     }
 
     tokens
-}
-
-fn contains(file: &String) -> bool {
-    !file.is_empty()
-}
-
-fn get_character(file: &mut String,
-    line_number: &mut usize, char_number: &mut usize) -> char {
-    
-    file.remove(0)
-}
-
-fn see_character(file: &mut String,
-    line_number: &mut usize, char_number: &mut usize) -> char {
-
-    file.chars().next().unwrap()
-}
-
-fn get_graphemic_character(file: &mut String,
-    line_number: &mut usize, char_number: &mut usize) -> String {
-    String::from(file.remove(0))
-}
-
-fn see_graphemic_character(file: &mut String,
-    line_number: &mut usize, char_number: &mut usize) -> String {
-    String::new()
 }
