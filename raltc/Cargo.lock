@@ -6,16 +6,21 @@ version = 3
 name = "raltc"
 version = "0.1.0"
 dependencies = [
- "raltc_script",
+ "raltc_moduler",
 ]
 
 [[package]]
-name = "raltc_failure"
+name = "raltc_error"
 version = "0.1.0"
 
 [[package]]
-name = "raltc_script"
+name = "raltc_moduler"
 version = "0.1.0"
 dependencies = [
- "raltc_failure",
+ "raltc_error",
+ "raltc_path",
 ]
+
+[[package]]
+name = "raltc_path"
+version = "0.1.0"

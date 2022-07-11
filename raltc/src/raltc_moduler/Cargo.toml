@@ -1,0 +1,11 @@
+[package]
+
+name    = "raltc_moduler"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+
+raltc_path  = { path = "../raltc_path" }
+raltc_token = { path = "src/raltc_token" }
+raltc_error = { path = "../raltc_error" }
