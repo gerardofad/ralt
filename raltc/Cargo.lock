@@ -25,9 +25,7 @@ dependencies = [
 name = "raltc_moduler"
 version = "0.1.0"
 dependencies = [
- "raltc_error",
  "raltc_file",
- "raltc_path",
  "raltc_token",
 ]
 

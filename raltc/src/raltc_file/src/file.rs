@@ -70,12 +70,24 @@ impl File {
 
         character
     }
-    
-    pub fn see_graphemic_character(&self) -> String {
-        String::from(self.content.chars().next().unwrap())
-    }
 
     pub fn remove_graphemic_character(&mut self) -> String {
-        String::from(self.content.remove(0))
+        let character: char = self.content.remove(0);
+        let mut graphemic_character: String = String::from(character);
+
+        match character {
+
+            // graphemic characters //
+
+            '\r' => {
+                if self.contains() && self.see_character() == '\n' {
+                    graphemic_character.push(self.remove_character());
+                }
+            },
+
+            _ => {}, // unicode character
+        }
+        
+        graphemic_character
     }
 }

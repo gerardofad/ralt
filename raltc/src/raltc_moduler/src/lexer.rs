@@ -1,11 +1,5 @@
-use std::panic;
-use std::fs;
-use std::path::Path;
-
-use raltc_path::path::*;
 use raltc_token::token::Token;
 use raltc_file::file::File;
-use raltc_error::error;
 
 enum Table {
     Directive,          // #
@@ -26,10 +20,8 @@ pub fn lexer(path: &str) -> Vec<Token> {
     let mut file = File::new();
     file.read_to_string(path);
 
-    let mut tokens:      Vec<Token> = vec![];
-    let mut token:       Token      = Token::new();
-    let mut line_number: usize      = 1;
-    let mut char_number: usize      = 0;
+    let mut tokens: Vec<Token> = vec![];
+    let mut token:  Token      = Token::new();
 
     let mut character: char;
 
@@ -44,8 +36,8 @@ pub fn lexer(path: &str) -> Vec<Token> {
 
                 token.id          = Table::Name as u8;
                 token.value       = String::from(character);
-                token.line_number = line_number;
-                token.char_number = char_number;
+                token.line_number = file.line_number;
+                token.char_number = file.char_number;
 
                 while file.contains() {
                     character = file.see_character();
@@ -69,8 +61,8 @@ pub fn lexer(path: &str) -> Vec<Token> {
 
                 token.id          = Table::IllegalUnfinishedString as u8;
                 token.value       = String::from(character);
-                token.line_number = line_number;
-                token.char_number = char_number;
+                token.line_number = file.line_number;
+                token.char_number = file.char_number;
 
                 while file.contains() {
                     character = file.remove_character();
@@ -99,8 +91,8 @@ pub fn lexer(path: &str) -> Vec<Token> {
 
                 token.id          = Table::Directive as u8;
                 token.value       = String::from(character);
-                token.line_number = line_number;
-                token.char_number = char_number;
+                token.line_number = file.line_number;
+                token.char_number = file.char_number;
 
                 tokens.push(token.give());
             },
@@ -111,8 +103,8 @@ pub fn lexer(path: &str) -> Vec<Token> {
 
                 token.id          = Table::Assigner as u8;
                 token.value       = String::from(character);
-                token.line_number = line_number;
-                token.char_number = char_number;
+                token.line_number = file.line_number;
+                token.char_number = file.char_number;
 
                 tokens.push(token.give());
             },
@@ -123,8 +115,8 @@ pub fn lexer(path: &str) -> Vec<Token> {
 
                 token.id          = Table::DirectiveOpenWrap as u8;
                 token.value       = String::from(character);
-                token.line_number = line_number;
-                token.char_number = char_number;
+                token.line_number = file.line_number;
+                token.char_number = file.char_number;
 
                 tokens.push(token.give());
             },
@@ -135,8 +127,8 @@ pub fn lexer(path: &str) -> Vec<Token> {
 
                 token.id          = Table::DirectiveCloseWrap as u8;
                 token.value       = String::from(character);
-                token.line_number = line_number;
-                token.char_number = char_number;
+                token.line_number = file.line_number;
+                token.char_number = file.char_number;
 
                 tokens.push(token.give());
             },
@@ -153,8 +145,8 @@ pub fn lexer(path: &str) -> Vec<Token> {
 
                 token.id          = Table::Illegal as u8;
                 token.value       = String::from(character);
-                token.line_number = line_number;
-                token.char_number = char_number;
+                token.line_number = file.line_number;
+                token.char_number = file.char_number;
 
                 // is comment ( //.. )
                 if file.contains() && file.see_character() == '/' {
@@ -168,8 +160,8 @@ pub fn lexer(path: &str) -> Vec<Token> {
             _ => {
                 token.id          = Table::Illegal as u8;
                 token.value       = file.remove_graphemic_character();
-                token.line_number = line_number;
-                token.char_number = char_number;
+                token.line_number = file.line_number;
+                token.char_number = file.char_number;
 
                 tokens.push(token.give());
             },
