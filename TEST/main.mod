@@ -1,7 +1,7 @@
-// Project in Ralt
+// project in Ralt
 
-#[main: "main.rt"] // Main file of project
+#[main: "main.rt"] // main file of project
 
-// Modules of the project
-#[module: "anymod" as anymod]
+// modules of the project
+#[module: "test" as testing]
 #[module: "folder/othermod" as othermod]

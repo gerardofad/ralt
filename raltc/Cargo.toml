@@ -6,4 +6,4 @@ edition = "2021"
 
 [dependencies]
 
-raltc_moduler = { path = "src/raltc_moduler" }
+raltc_mod_parser = { path = "src/raltc_moduler/src/raltc_mod_parser" }

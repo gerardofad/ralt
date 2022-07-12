@@ -86,17 +86,20 @@ impl File {
             },
 
             _ => {
+                // hindi graphemes
                 if self.contains() && self.see_character() == '्' &&
-                    File::is_alphabet_hindi(character) {
+                    File::is_alphabet_hindi_for_graphemes(character) {
                     graphemic_character.push(self.remove_character());
                 }
-            }, // unicode character
+
+                // or unicode character (else)
+            },
         }
         
         graphemic_character
     }
 
-    pub fn is_alphabet_hindi(character: char) -> bool {
+    fn is_alphabet_hindi_for_graphemes(character: char) -> bool {
         match character {
             // not virama ( ੍ ) support: 'ॐ'
             'अ' | 'आ' | 'ए' | 'ई' | 'ऍ' | 'ऎ' | 'ऐ' | 'इ' | 'ओ' | 'ऑ' | 'ऒ' | 'ऊ' |

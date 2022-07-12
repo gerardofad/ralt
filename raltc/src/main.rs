@@ -1,9 +1,10 @@
-use raltc_moduler::lexer::lexer;
+use raltc_mod_parser::parser::*;
 
 fn main() {
-    let tokens = lexer("../TEST/main.mod");
+    let mut moduler: Moduler = Moduler {
+        main_module: Module::new(),
+        modules:     vec![],
+    };
 
-    for token in &tokens {
-        print!("[{}] ", token.value);
-    }
+    parser("../TEST/main.mod", &mut moduler);
 }

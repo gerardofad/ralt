@@ -6,7 +6,7 @@ version = 3
 name = "raltc"
 version = "0.1.0"
 dependencies = [
- "raltc_moduler",
+ "raltc_mod_parser",
 ]
 
 [[package]]
@@ -22,10 +22,18 @@ dependencies = [
 ]
 
 [[package]]
-name = "raltc_moduler"
+name = "raltc_mod_lexer"
 version = "0.1.0"
 dependencies = [
  "raltc_file",
+ "raltc_token",
+]
+
+[[package]]
+name = "raltc_mod_parser"
+version = "0.1.0"
+dependencies = [
+ "raltc_mod_lexer",
  "raltc_token",
 ]
 

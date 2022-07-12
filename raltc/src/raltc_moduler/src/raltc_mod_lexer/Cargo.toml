@@ -1,0 +1,10 @@
+[package]
+
+name    = "raltc_mod_lexer"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+
+raltc_file  = { path = "../../../raltc_file" }
+raltc_token = { path = "../../../raltc_token" }

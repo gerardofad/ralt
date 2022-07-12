@@ -1,7 +1,8 @@
 use raltc_token::token::Token;
 use raltc_file::file::File;
 
-enum Table {
+// table of tokens: '.mod'
+pub enum Table {
     Directive,          // #
     Name,               // name
     StringValue,        // "Hi!"
