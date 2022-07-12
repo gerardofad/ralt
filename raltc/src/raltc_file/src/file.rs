@@ -85,9 +85,27 @@ impl File {
                 }
             },
 
-            _ => {}, // unicode character
+            _ => {
+                if self.contains() && self.see_character() == '्' &&
+                    File::is_alphabet_hindi(character) {
+                    graphemic_character.push(self.remove_character());
+                }
+            }, // unicode character
         }
         
         graphemic_character
+    }
+
+    pub fn is_alphabet_hindi(character: char) -> bool {
+        match character {
+            // not virama ( ੍ ) support: 'ॐ'
+            'अ' | 'आ' | 'ए' | 'ई' | 'ऍ' | 'ऎ' | 'ऐ' | 'इ' | 'ओ' | 'ऑ' | 'ऒ' | 'ऊ' |
+            'औ' | 'उ' | 'ब' | 'भ' | 'च' | 'छ' | 'ड' | 'ढ' | 'फ' | 'फ़' | 'ग' | 'घ' |
+            'ग़' | 'ह' | 'ज' | 'झ' | 'क' | 'ख' | 'ख़' | 'ल' | 'ळ' | 'ऌ' | 'ऴ' | 'ॡ' |
+            'म' | 'न' | 'ङ' | 'ञ' | 'ण' | 'ऩ' | 'प' | 'क़' | 'र' | 'ऋ' | 'ॠ' | 'ऱ' |
+            'स' | 'श' | 'ष' | 'ट' | 'त' | 'ठ' | 'द' | 'थ' | 'ध' | 'ड़' | 'ढ़' | 'व' |
+            'य' | 'य़' | 'ज़' => { true },
+            _ => { false },
+        }
     }
 }
