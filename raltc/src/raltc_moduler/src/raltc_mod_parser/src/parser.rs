@@ -1,6 +1,8 @@
 use raltc_token::token::Token;
 
 use raltc_mod_lexer::lexer::*;
+use raltc_mod_autocorrect::autocorrect::autocorrect;
+use raltc_mod_error::moduler_error::ModulerError;
 
 // syntactic analyzer for the file '.mod'
 pub fn parser(path: &str, moduler: &mut Moduler) {
@@ -9,15 +11,30 @@ pub fn parser(path: &str, moduler: &mut Moduler) {
         path: path.to_string().clone(),
     };
 
+    // error handler for '.mod'
+    let mut errormod: ModulerError = ModulerError::new();
+    errormod.path = path.to_string().clone();
+
     // get all tokens of the file: '.mod'
-    let mut tokens: Vec<Token> = lexer(path);
-    let token:      Token;
+    // note: the parameter in true: skip unnecessary 'pseudo-code'
+    let mut tokens: Vec<Token> = lexer(path, true);
+    let mut token:  Token;
 
     while !tokens.is_empty() {
-        token = tokens.first();
+        token = (*tokens.first().unwrap()).clone();
 
+        errormod.token       = token.value.clone();
+        errormod.line_number = token.line_number;
+        errormod.char_number = token.char_number;
+
+        // sentence: directive
         if token.id == Table::Directive as u8 {
+            tokens.remove(0);
+
+        // sentence: illegal (terminate program)
         } else {
+            token.value = String::new();
+            autocorrect(path, &token);
         }
     }
 }

@@ -10,15 +10,23 @@ pub enum Table {
     DirectiveOpenWrap,  // [
     DirectiveCloseWrap, // ]
 
+    // possible tokens cleaned
+    Comment, // '//...'
+    Whitespace,
+
+    // tokens for errors
     IllegalUnfinishedString, // "..
     Illegal,
 }
 
 // lexicographic analyzer for the file: '.mod'
-pub fn lexer(path: &str) -> Vec<Token> {
+// mention: the parameter 'clean' in 'true': skip unnecessary 'pseudo-code' as
+//  comments, whitespaces and quotes of strings
+pub fn lexer(path: &str, clean: bool) -> Vec<Token> {
     File::assert_exists(path);
 
-    let mut file = File::new();
+    let mut file: File = File::new();
+    file.line_number   = 1;
     file.read_to_string(path);
 
     let mut tokens: Vec<Token> = vec![];
@@ -72,7 +80,8 @@ pub fn lexer(path: &str) -> Vec<Token> {
                         // end of string
                         '"' => {
                             token.id = Table::StringValue as u8;
-                            token.value.remove(0);
+                            if !clean { token.value.push(character); }
+                            else { token.value.remove(0); }
                             break;
                         },
 
@@ -137,6 +146,14 @@ pub fn lexer(path: &str) -> Vec<Token> {
             // token: whitespaces - (skip it)
             ' ' | '\t' | '\r' | '\n' => {
                 file.remove_character();
+
+                // if the cleaner is deactivated, the token will be obtained
+                if !clean {
+                    token.id = Table::Whitespace as u8;
+                    token.value.push(character);
+                    tokens.push(token.give());
+                }
+
                 continue;
             },
 
@@ -152,8 +169,15 @@ pub fn lexer(path: &str) -> Vec<Token> {
                 // is comment ( //.. )
                 if file.contains() && file.see_character() == '/' {
                     while file.contains() && file.see_character() != '\n' {
-                        file.remove_character();
+                        if !clean { token.value.push(file.remove_character()); }
+                        else { file.remove_character(); }
                     }
+                }
+
+                // if the cleaner is deactivated, the token will be obtained
+                if !clean {
+                    token.id = Table::Comment as u8;
+                    tokens.push(token.give());
                 }
             },
 

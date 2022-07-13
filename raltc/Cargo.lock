@@ -22,6 +22,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "raltc_mod_error"
+version = "0.1.0"
+dependencies = [
+ "raltc_error",
+]
+
+[[package]]
 name = "raltc_mod_lexer"
 version = "0.1.0"
 dependencies = [
@@ -33,6 +40,7 @@ dependencies = [
 name = "raltc_mod_parser"
 version = "0.1.0"
 dependencies = [
+ "raltc_mod_error",
  "raltc_mod_lexer",
  "raltc_token",
 ]
