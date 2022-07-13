@@ -1,10 +1,7 @@
-use raltc_mod_parser::parser::*;
+use raltc_codegen::codegen::codegen;
 
 fn main() {
-    let mut moduler: Moduler = Moduler {
-        main_module: Module::new(),
-        modules:     vec![],
-    };
+    codegen("../TEST/main.rs");
 
-    parser("../TEST/main.mod", &mut moduler);
+    println!("Ok");
 }
