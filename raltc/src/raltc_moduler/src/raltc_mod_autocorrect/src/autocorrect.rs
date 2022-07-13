@@ -19,7 +19,7 @@ pub fn autocorrect(path: &str, token_to_replace: &Token,
     // begin of block of mention of automatic correction
     if !*first_autocorrection_exists {
         *first_autocorrection_exists = true;
-        eprint!("mention: autocorrected code {{");
+        eprint!("autocorrecter: corrected code {{");
     }
 
     while !tokens.is_empty() {

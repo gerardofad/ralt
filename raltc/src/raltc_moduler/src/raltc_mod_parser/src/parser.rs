@@ -27,9 +27,11 @@ pub fn parser(path: &str, moduler: &mut Moduler) {
     while !tokens.is_empty() {
         token = (*tokens.first().unwrap()).clone();
 
-        // sentence: directive ( #[directive..] )
+        // sentence: directive ( # ) - ( #[directive..] )
         if token.id == Table::Directive as u8 {
             tokens.remove(0);
+
+            // part of directive: [ //
 
             if tokens.is_empty() {
                 token.value = String::from("[");
@@ -50,6 +52,8 @@ pub fn parser(path: &str, moduler: &mut Moduler) {
             }
 
             tokens.remove(0);
+
+            // part of directive: name //
 
             errormod.token       = token.value.clone();
             errormod.line_number = token.line_number;
