@@ -1,3 +1,5 @@
+use std::panic;
+
 use raltc_token::token::Token;
 
 use raltc_mod_lexer::lexer::*;
@@ -20,22 +22,54 @@ pub fn parser(path: &str, moduler: &mut Moduler) {
     let mut tokens: Vec<Token> = lexer(path, true);
     let mut token:  Token;
 
+    let mut first_autocorrection_exists: bool = false;
+
     while !tokens.is_empty() {
         token = (*tokens.first().unwrap()).clone();
 
-        errormod.token       = token.value.clone();
-        errormod.line_number = token.line_number;
-        errormod.char_number = token.char_number;
-
-        // sentence: directive
+        // sentence: directive ( #[directive..] )
         if token.id == Table::Directive as u8 {
             tokens.remove(0);
 
-        // sentence: illegal (terminate program)
+            if tokens.is_empty() {
+                token.value = String::from("[");
+                token.char_number += 1;
+                
+                // last parameter in true: append ( [ ) to end file
+                autocorrect(path, &token, &mut first_autocorrection_exists, true);
+                break;
+            }
+
+            token = (*tokens.first().unwrap()).clone();
+
+            // is: [ of #[..]
+            if token.id != Table::DirectiveOpenWrap as u8 {
+                token.value = String::from("[");
+                // change illegal for [ of directive
+                autocorrect(path, &token, &mut first_autocorrection_exists, false);
+            }
+
+            tokens.remove(0);
+
+            errormod.token       = token.value.clone();
+            errormod.line_number = token.line_number;
+            errormod.char_number = token.char_number;
+
+        // sentence: illegal
         } else {
+            tokens.remove(0);
             token.value = String::new();
-            autocorrect(path, &token);
+            // remove illegals
+            autocorrect(path, &token, &mut first_autocorrection_exists, false);
         }
+    }
+
+    // end of block of mention of automatic correction
+    if first_autocorrection_exists {
+        eprintln!("\n}}\n");
+
+        panic::set_hook(Box::new(|_|{}));
+        panic!();
     }
 }
 

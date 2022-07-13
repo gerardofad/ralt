@@ -7,5 +7,6 @@ edition = "2021"
 [dependencies]
 
 raltc_token = { path = "../../../raltc_token" }
+raltc_path  = { path = "../../../raltc_path" }
 
 raltc_mod_lexer = { path = "../raltc_mod_lexer" }

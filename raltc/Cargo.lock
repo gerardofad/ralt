@@ -22,6 +22,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "raltc_mod_autocorrect"
+version = "0.1.0"
+dependencies = [
+ "raltc_mod_lexer",
+ "raltc_path",
+ "raltc_token",
+]
+
+[[package]]
 name = "raltc_mod_error"
 version = "0.1.0"
 dependencies = [
@@ -40,6 +49,7 @@ dependencies = [
 name = "raltc_mod_parser"
 version = "0.1.0"
 dependencies = [
+ "raltc_mod_autocorrect",
  "raltc_mod_error",
  "raltc_mod_lexer",
  "raltc_token",
