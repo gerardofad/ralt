@@ -1,6 +1,6 @@
 use std::fs;
 
-use raltc_attributes::str_chars::str_chars;
+use raltc_attributer::attributer::attributer;
 
 // Code generator of file to file - ('Ralt' to Rust)
 pub fn codegen(path: &str) {
@@ -14,12 +14,27 @@ pub fn codegen(path: &str) {
     while !file.is_empty() {
         character = file.chars().next().unwrap();
 
-        // Attributes in Ralt
         match character {
 
-            // Is string of graphemes ( ".." )
-            '"' => {
-                str_chars(&mut file, &mut line_number, &mut char_number, &mut codegen);
+            // Is negation operator ( ! ) - (Rust) or attribute ( !{..} ) - (Ralt)
+            '!' => {
+                
+                // Is attribute of Ralt
+                if file.len() >= 2 && { let mut next = file.chars();
+                    next.next(); next.next().unwrap() } == '{' { // Next of '!' is '{' in '!{..}'
+                    
+                    attributer(
+                        &mut file,
+                        &mut line_number,
+                        &mut char_number,
+                        &mut codegen
+                    );
+
+                    continue;
+                }
+                    
+                file.remove(0); // Remove: negation operator ( ! )
+                codegen.push(character);
             },
 
             // Is Rust code (pure)

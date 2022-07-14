@@ -6,4 +6,4 @@ edition = "2021"
 
 [dependencies]
 
-raltc_attributes = { path = "../raltc_attributes" }
+raltc_attributer = { path = "../raltc_attributer" }

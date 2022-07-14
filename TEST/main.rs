@@ -1,5 +1,5 @@
 fn main() {
-    let rust: !{str} = !{"Ralt"};
+    let rust: ! {str} = !{"Ralt"};
 
     println!("Hi, {}", rust);
 }

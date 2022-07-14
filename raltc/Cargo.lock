@@ -10,7 +10,14 @@ dependencies = [
 ]
 
 [[package]]
-name = "raltc_attributes"
+name = "raltc_attributer"
+version = "0.1.0"
+dependencies = [
+ "raltc_attrs",
+]
+
+[[package]]
+name = "raltc_attrs"
 version = "0.1.0"
 dependencies = [
  "raltc_graphemes",
@@ -20,7 +27,7 @@ dependencies = [
 name = "raltc_codegen"
 version = "0.1.0"
 dependencies = [
- "raltc_attributes",
+ "raltc_attributer",
 ]
 
 [[package]]
