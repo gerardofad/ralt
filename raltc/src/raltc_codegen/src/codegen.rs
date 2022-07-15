@@ -1,9 +1,11 @@
 use std::fs;
+use std::fs::File;
+use std::io::Write;
 
 use raltc_attributer::attributer::attributer;
 
 // Code generator of file to file - ('Ralt' to Rust)
-pub fn codegen(path: &str) {
+pub fn codegen(path: &str, output_path: &str) {
     let mut file:    String = fs::read_to_string(path).unwrap();
     let mut codegen: String = String::new();
 
@@ -45,5 +47,6 @@ pub fn codegen(path: &str) {
         }
     }
 
-    println!("{}", codegen);
+    let mut output_file: File = File::create(output_path).unwrap();
+    write!(&mut output_file, "{}", codegen);
 }

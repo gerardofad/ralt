@@ -1,5 +1,5 @@
 fn main() {
-    let rust: ! {str} = !{"Ralt"};
+    let rust = !{"Grapheme: स्"};
 
-    println!("Hi, {}", rust);
+    println!("[{}]", rust.join("] ["));
 }
