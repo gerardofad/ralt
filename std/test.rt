@@ -1,4 +1,4 @@
-fnt: main(var: in(array[num]str) | var: out(str)) {
+fnt: main(var: in(array[num]str) | var: out-name(str)) {
     var: message(str: "I love you!")
     message("Hi")
     message("Hi"{})

@@ -1,5 +1,8 @@
 use std::fs;
 
+use raltc_table::table::Table;
+use raltc_errorlang::errorlang::ErrorLang;
+
 pub struct Token {
     pub id:      u8,
     pub value:   String,
@@ -81,8 +84,8 @@ impl File {
 }
 
 // lexicographic analyzer (get token by token)
-pub fn lexer(file: &mut File, token: &mut Token) -> bool {
-    let c: char;
+pub fn lexer(file: &mut File, token: &mut Token, error: &mut ErrorLang) -> bool {
+    let mut c: char;
 
     while file.contains() {
         c = file.seechar();
@@ -92,16 +95,43 @@ pub fn lexer(file: &mut File, token: &mut Token) -> bool {
             // is name
             'a' ..= 'z' => {
                 file.getchar();
-                token.id      = 0;
+                token.id      = Table::Name as u8;
                 token.value   = String::from(c);
                 token.linenum = file.linenum;
                 token.charnum = file.charnum;
+
+                let mut unfinished_name: bool = false;
+
+                while file.contains() {
+                    c = file.seechar();
+
+                    match c {
+
+                        // name
+                        'a' ..= 'z' | '-' => {
+                            if c == '-' { unfinished_name = true; }
+                            else { unfinished_name = false; }
+
+                            token.value.push(file.getchar());
+                        },
+
+                        // end of name
+                        _ => { break; },
+                    }
+                }
+
+                if unfinished_name {
+                    error.linenum = token.linenum;
+                    error.charnum = file.charnum;
+                    error.token   = token.value.clone();
+                    error.stop("unfinished name");
+                }
             },
 
             // is illegal token
             _ => {
                 file.getchar();
-                token.id      = 1;
+                token.id      = Table::Illegal as u8;
                 token.value   = String::from(c);
                 token.linenum = file.linenum;
                 token.charnum = file.charnum;
