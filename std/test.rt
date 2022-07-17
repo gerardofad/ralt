@@ -1,0 +1,31 @@
+fnt: main(var: in(array[num]str) | var: out(str)) {
+    var: message(str: "I love you!")
+    message("Hi")
+    message("Hi"{})
+
+    sensor: message {
+        is: "Hi" {
+            io("Hi!")
+        }
+
+        is: "Hello" {
+            io("Hello!")
+        }
+
+        or: "?" {
+            io("??")
+        }
+    }
+
+    is: message = "Hi" {
+        io("Hi!")
+
+    } is: message = "Hllo" {
+        io("Hello!")
+
+    } or {
+        io("?")
+    }
+
+    retr: message
+}

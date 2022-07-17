@@ -6,4 +6,4 @@ edition = "2021"
 
 [dependencies]
 
-raltc_codegen = { path = "src/raltc_codegen" }
+raltc_lexer = { path = "src/raltc_lexer" }

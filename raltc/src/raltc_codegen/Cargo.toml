@@ -1,9 +1,0 @@
-[package]
-
-name    = "raltc_codegen"
-version = "0.1.0"
-edition = "2021"
-
-[dependencies]
-
-raltc_attributer = { path = "../raltc_attributer" }

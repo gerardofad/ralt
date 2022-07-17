@@ -1,9 +1,0 @@
-[package]
-
-name    = "raltc_attrs"
-version = "0.1.0"
-edition = "2021"
-
-[dependencies]
-
-raltc_graphemes = { path = "../raltc_graphemes" }

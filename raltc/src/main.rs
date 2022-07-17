@@ -1,11 +1,11 @@
-use raltc_codegen::codegen::codegen;
+use raltc_lexer::lexer::*;
 
 fn main() {
-    codegen(
-        "../TEST/main.rs",
-        
-        "../BUILD/main/src/main.rs"
-    );
+    let mut file:  File  = File::new();
+    file.open("../std/test.rt");
+    let mut token: Token = Token::new();
 
-    println!("Ok");
+    while lexer(&mut file, &mut token) {
+        print!("[{}] ", token.value);
+    }
 }
