@@ -3,8 +3,3 @@
 name    = "raltc"
 version = "0.1.0"
 edition = "2021"
-
-[dependencies]
-
-raltc_lexer     = { path = "src/raltc_lexer" }
-raltc_errorlang = { path = "src/raltc_errorlang" }

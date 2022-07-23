@@ -1,15 +1,13 @@
-use raltc_lexer::lexer::*;
-use raltc_errorlang::errorlang::ErrorLang;
+use std::panic;
 
-fn main() {
-    let mut file: File = File::new();
-    file.open("../std/test.rt");
-    let mut error: ErrorLang = ErrorLang::new();
-    error.file = String::from("../std/test.rt");
+fn main() { // Custom error message
+    panic::set_hook(Box::new(|panic_info| {
+        if let Some(get_panic_info) = panic_info.payload().downcast_ref::<&str>() {
+            eprintln!("error: {}", get_panic_info);
+        } else {
+            eprintln!("error: unexpected");
+        }
+    }));
 
-    let mut token: Token = Token::new();
-
-    while lexer(&mut file, &mut token, &mut error) {
-        print!("[{}] ", token.value);
-    }
+    panic!("illegal");
 }

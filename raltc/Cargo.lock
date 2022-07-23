@@ -5,23 +5,3 @@ version = 3
 [[package]]
 name = "raltc"
 version = "0.1.0"
-dependencies = [
- "raltc_errorlang",
- "raltc_lexer",
-]
-
-[[package]]
-name = "raltc_errorlang"
-version = "0.1.0"
-
-[[package]]
-name = "raltc_lexer"
-version = "0.1.0"
-dependencies = [
- "raltc_errorlang",
- "raltc_table",
-]
-
-[[package]]
-name = "raltc_table"
-version = "0.1.0"
